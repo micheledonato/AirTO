@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new WeatherAdapter();
+        mAdapter = new WeatherAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 }
