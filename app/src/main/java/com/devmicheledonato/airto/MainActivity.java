@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.devmicheledonato.airto.utils.NetworkUtils;
+
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
