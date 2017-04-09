@@ -43,7 +43,7 @@ public class NetworkUtils {
                 .appendQueryParameter(API_PARAM, BuildConfig.OW_API_KEY)
                 .appendQueryParameter(UNITS_PARAM, METRIC)
                 .build();
-        
+
         try {
             URL weatherQueryUrl = new URL(weatherQueryUri.toString());
             Log.v(TAG, "URL: " + weatherQueryUrl);
