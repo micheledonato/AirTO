@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.devmicheledonato.airto.utils.NetworkUtils;
+import com.devmicheledonato.airto.sync.WeatherSyncIntentService;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
          * the last created loader is re-used.
          */
         getSupportLoaderManager().initLoader(ID_WEATHER_LOADER, null, this);
+
+        startService(new Intent(MainActivity.this, WeatherSyncIntentService.class));
     }
 
     private void initRecyclerView() {
