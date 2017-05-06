@@ -1,5 +1,8 @@
 package com.devmicheledonato.airto.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
@@ -25,17 +28,18 @@ public class AirToNetworkUtils {
 
     private static final String TAG = AirToNetworkUtils.class.getSimpleName();
 
-    private static final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast";
+    private static final String WEATHER_URL = "https://api.darksky.net/forecast";
 
-    private static final String CITY_PARAM = "id";
-    private static final String TURIN_ID = "3165524";
-
-    // API_KEY
-    private static final String API_PARAM = "appid";
+    private static final String TURIN_LAT_LNG = "45.071,7.686";
 
     private static final String UNITS_PARAM = "units";
-    private static final String METRIC = "metric";
-    private static final String IMPERIAL = "imperial";
+    private static final String METRIC = "si";
+
+    private static final String EXCLUDE_PARAM = "exclude";
+    private static final String period = "currently,hourly,minutely,flags";
+
+    private static final String LANG_PARAM = "lang";
+    private static final String ITALIAN = "it";
 
     private static final String IPQA_URL =
             "http://www.cittametropolitana.torino.it/cms/ambiente/qualita-aria/dati-qualita-aria/ipqa";
@@ -47,8 +51,10 @@ public class AirToNetworkUtils {
      */
     public static URL buildUrl() {
         Uri weatherQueryUri = Uri.parse(WEATHER_URL).buildUpon()
-                .appendQueryParameter(CITY_PARAM, TURIN_ID)
-                .appendQueryParameter(API_PARAM, BuildConfig.OW_API_KEY)
+                .appendPath(BuildConfig.API_KEY)
+                .appendPath(TURIN_LAT_LNG)
+                .appendQueryParameter(EXCLUDE_PARAM, period)
+                .appendQueryParameter(LANG_PARAM, ITALIAN)
                 .appendQueryParameter(UNITS_PARAM, METRIC)
                 .build();
 
@@ -109,4 +115,9 @@ public class AirToNetworkUtils {
         return ipqa;
     }
 
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    }
 }

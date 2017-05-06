@@ -3,6 +3,8 @@ package com.devmicheledonato.airto.data;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import com.devmicheledonato.airto.utils.AirToDateUtils;
+
 /**
  * Created by Michele on 09/04/2017.
  */
@@ -45,19 +47,28 @@ public class WeatherContract {
          */
         public static final String TABLE_NAME = "weather";
 
-        public static final String COLUMN_DATE = "dt";
+        public static final String COLUMN_DATE = "time";
 
-        // Inner "main" jsonObject
-        public static final String COLUMN_TEMP = "temp";
+        public static final String COLUMN_SUMMARY = "summary";
+
         public static final String COLUMN_MIN_TEMP = "temp_min";
         public static final String COLUMN_MAX_TEMP = "temp_max";
-        public static final String COLUMN_PRESSURE = "pressure";
-        public static final String COLUMN_HUMIDITY = "humidity";
-        // Inner "weather" jsonArray
-        public static final String COLUMN_WEATHER_ID = "weather_id";
-        public static final String COLUMN_WEATHER_MAIN = "weather_main";
-        public static final String COLUMN_WEATHER_DESCRIPTION = "weather_description";
+
         public static final String COLUMN_WEATHER_ICON = "weather_icon";
+
+        public static final String COLUMN_IPQA = "ipqa";
+
+        /**
+         * Returns just the selection part of the weather query from a normalized today value.
+         * This is used to get a weather forecast from today's date. To make this easy to use
+         * in compound selection, we embed today's date as an argument in the query.
+         *
+         * @return The selection part of the weather query for today onwards
+         */
+        public static String getSqlSelectForTodayOnwards() {
+            long normalizedUtcNow = AirToDateUtils.normalizeDate(System.currentTimeMillis());
+            return WeatherContract.WeatherEntry.COLUMN_DATE + " >= " + normalizedUtcNow;
+        }
 
     }
 

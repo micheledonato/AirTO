@@ -1,11 +1,13 @@
 package com.devmicheledonato.airto.sync;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
+import com.devmicheledonato.airto.data.WeatherContract;
 import com.devmicheledonato.airto.utils.AirToNetworkUtils;
-import com.devmicheledonato.airto.utils.OpenWeatherJsonUtils;
+import com.devmicheledonato.airto.utils.AirToJsonUtils;
 
 import java.net.URL;
 
@@ -32,9 +34,22 @@ public class SyncTask {
                 e.printStackTrace();
             }
 
-            ContentValues[] weatherValues = OpenWeatherJsonUtils.getWeatherContentValuesFromJson(context, jsonWeatherResponse, ipqaResponse);
+            ContentValues[] weatherValues = AirToJsonUtils.getWeatherContentValuesFromJson(context, jsonWeatherResponse, ipqaResponse);
 
             if (weatherValues != null && weatherValues.length != 0) {
+                ContentResolver contentResolver = context.getContentResolver();
+
+                /* Delete old weather data because we don't need to keep multiple days' data */
+                contentResolver.delete(
+                        WeatherContract.WeatherEntry.CONTENT_URI,
+                        null,
+                        null);
+
+                /* Insert our new weather data into AirTo's ContentProvider */
+                contentResolver.bulkInsert(
+                        WeatherContract.WeatherEntry.CONTENT_URI,
+                        weatherValues);
+
 
             }
 

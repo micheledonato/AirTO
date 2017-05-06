@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Icon Sizes -->
+    <dimen name="today_icon">96dp</dimen>
+    <dimen name="list_icon">40dp</dimen>
+
+    <dimen name="list_item_padding_vertical">12dp</dimen>
+    <dimen name="list_item_padding_horizontal">16dp</dimen>
+
+    <dimen name="list_item_date_left_margin">16dp</dimen>
+
+    <dimen name="forecast_text_size">28dp</dimen>
+    <dimen name="forecast_temperature_space">8dp</dimen>
+
+</resources>

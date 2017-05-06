@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AirTO</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="today">Oggi</string>
+    <string name="tomorrow">Domani</string>
+    <string name="no_connection">Nessuna connessione</string>
+    <string name="fail_results">Fallito il recupero dei dati. Riprova per favore.</string>
+</resources>
