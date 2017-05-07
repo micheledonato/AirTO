@@ -6,6 +6,8 @@ import android.text.format.DateUtils;
 import com.devmicheledonato.airto.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,6 +40,17 @@ public class AirToDateUtils {
         long daysSinceEpoch = elapsedDaysSinceEpoch(date);
         long millisFromEpochToTodayAtMidnightUtc = daysSinceEpoch * DAY_IN_MILLIS;
         return millisFromEpochToTodayAtMidnightUtc;
+    }
+
+    public static long getTodayAtMidnight() {
+        // today
+        Calendar date = new GregorianCalendar();
+        // reset hour, minutes, seconds and millis
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+        return date.getTimeInMillis();
     }
 
     /**
@@ -93,7 +106,6 @@ public class AirToDateUtils {
      * them, and leave it up to the caller to throw an IllegalArgumentException.
      *
      * @param millisSinceEpoch Milliseconds since January 1, 1970 at midnight
-     *
      * @return true if the date represents the beginning of a day in Unix time, false otherwise
      */
     public static boolean isDateNormalized(long millisSinceEpoch) {

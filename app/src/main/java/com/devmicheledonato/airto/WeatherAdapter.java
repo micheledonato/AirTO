@@ -74,9 +74,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
         //TODO REMOVE
         layoutId = R.layout.weather_list_item;
-
-        //TODO, perchè non vedo il giorno corrente???
-
+        
         View view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
         view.setFocusable(true);
         return new ViewHolder(view);
@@ -113,6 +111,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         long dateInMillis = mCursor.getLong(MainActivity.INDEX_WEATHER_DATE);
         String dateString = AirToDateUtils.getReadableDateString(mContext, dateInMillis);
         holder.date.setText(dateString);
+        Log.d(TAG, "Position: " + position + " Date millis: " + dateInMillis + " dateString: " + dateString);
 
         holder.weatherDescription.setText(mCursor.getString(MainActivity.INDEX_WEATHER_SUMMARY));
 

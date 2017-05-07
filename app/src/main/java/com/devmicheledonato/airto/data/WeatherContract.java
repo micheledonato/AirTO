@@ -2,6 +2,7 @@ package com.devmicheledonato.airto.data;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.devmicheledonato.airto.utils.AirToDateUtils;
 
@@ -10,6 +11,8 @@ import com.devmicheledonato.airto.utils.AirToDateUtils;
  */
 
 public class WeatherContract {
+
+    private static final String TAG = WeatherContract.class.getSimpleName();
 
     /**
      * The Content authority is a name for the entire content provider.
@@ -66,8 +69,8 @@ public class WeatherContract {
          * @return The selection part of the weather query for today onwards
          */
         public static String getSqlSelectForTodayOnwards() {
-            long normalizedUtcNow = AirToDateUtils.normalizeDate(System.currentTimeMillis());
-            return WeatherContract.WeatherEntry.COLUMN_DATE + " >= " + normalizedUtcNow;
+            long today = AirToDateUtils.getTodayAtMidnight();
+            return WeatherContract.WeatherEntry.COLUMN_DATE + " >= " + today;
         }
 
     }

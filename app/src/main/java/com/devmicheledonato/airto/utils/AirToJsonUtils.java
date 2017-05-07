@@ -45,10 +45,10 @@ public class AirToJsonUtils {
             JSONObject dayForecast = jsonWeatherArray.getJSONObject(i);
             long dateTimeMillis = dayForecast.getLong(ChildData.TIME);
 
-            long dateNormalizedMillis1 = AirToDateUtils.normalizeDate(dateTimeMillis * 1000);
+//            long dateNormalizedMillis1 = AirToDateUtils.normalizeDate(dateTimeMillis * 1000);
             long dateNormalizedMillis = dateTimeMillis * 1000;
-            Log.d(TAG, dateNormalizedMillis + " vs. " + dateNormalizedMillis1);
-            Log.d(TAG, "Date normalized: " + AirToDateUtils.getReadableDateString(context, dateNormalizedMillis));
+//            Log.d(TAG, dateNormalizedMillis + " vs. " + dateNormalizedMillis1);
+//            Log.d(TAG, "Date normalized: " + AirToDateUtils.getReadableDateString(context, dateNormalizedMillis));
 
             String summary = dayForecast.getString(ChildData.SUMMARY);
             String icon = dayForecast.getString(ChildData.ICON);

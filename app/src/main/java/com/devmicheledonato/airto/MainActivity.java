@@ -72,12 +72,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         initRecyclerView();
 
+        showLoading();
+
         if (!AirToNetworkUtils.isOnline(this)) {
             showError(getString(R.string.no_connection));
             return;
         }
-
-        showLoading();
 
         /*
          * Ensures a loader is initialized and active. If the loader doesn't already exist, one is

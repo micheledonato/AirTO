@@ -44,6 +44,8 @@ public class AirToNetworkUtils {
     private static final String IPQA_URL =
             "http://www.cittametropolitana.torino.it/cms/ambiente/qualita-aria/dati-qualita-aria/ipqa";
 
+    private static final String IPQA_NA = "NOT_AVAILABLE";
+
     /**
      * Builds the URL used to talk to the weather server.
      *
@@ -109,9 +111,18 @@ public class AirToNetworkUtils {
         iteratorTR.next();
         Iterator<Element> iteratorTD = table.select("td").iterator();
 
-        ipqa[2] = iteratorTD.next().text().split(" ")[1];
-        ipqa[3] = iteratorTD.next().text().split(" ")[1];
-
+        try {
+            ipqa[2] = iteratorTD.next().text().split(" ")[1];
+        } catch (Exception e) {
+            ipqa[2] = IPQA_NA;
+            Log.e(TAG, "IPQA TODAY error: " + e.getMessage());
+        }
+        try {
+            ipqa[3] = iteratorTD.next().text().split(" ")[1];
+        } catch (Exception e) {
+            ipqa[3] = IPQA_NA;
+            Log.e(TAG, "IPQA TOMORROW error: " + e.getMessage());
+        }
         return ipqa;
     }
 

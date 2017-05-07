@@ -49,8 +49,6 @@ public class SyncTask {
                 contentResolver.bulkInsert(
                         WeatherContract.WeatherEntry.CONTENT_URI,
                         weatherValues);
-
-
             }
 
         } catch (Exception e) {
