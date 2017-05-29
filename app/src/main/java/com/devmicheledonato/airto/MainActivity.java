@@ -1,12 +1,12 @@
 package com.devmicheledonato.airto;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,13 +16,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.devmicheledonato.airto.data.WeatherContract;
-import com.devmicheledonato.airto.sync.WeatherSyncIntentService;
+import com.devmicheledonato.airto.sync.SyncUtils;
 import com.devmicheledonato.airto.utils.AirToNetworkUtils;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private final String TAG = MainActivity.class.getSimpleName();
 
@@ -56,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     private static final int ID_WEATHER_LOADER = 86;
 
-    private ProgressBar mLoadingIndicator;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private TextView mErrorData;
 
     private RecyclerView mRecyclerView;
     private WeatherAdapter mAdapter;
@@ -69,15 +71,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Log.d(TAG, "onCreate");
 
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         initRecyclerView();
+        initSwipeRefreshLayout();
 
-        showLoading();
-
-        if (!AirToNetworkUtils.isOnline(this)) {
-            showError(getString(R.string.no_connection));
-            return;
-        }
+        mErrorData = (TextView) findViewById(R.id.error_data_text_view);
+        showData();
 
         /*
          * Ensures a loader is initialized and active. If the loader doesn't already exist, one is
@@ -86,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
          */
         getSupportLoaderManager().initLoader(ID_WEATHER_LOADER, null, this);
 
-        startService(new Intent(MainActivity.this, WeatherSyncIntentService.class));
+        SyncUtils.initialize(this);
     }
 
     private void initRecyclerView() {
@@ -106,8 +104,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    private void initSwipeRefreshLayout() {
+        Log.d(TAG, "initSwipeRefreshLayout");
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getIntArray(R.array.swipeColor));
+        mSwipeRefreshLayout.setRefreshing(true);
+        onRefresh();
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
+        Log.d(TAG, "onCreateLoader");
 
         switch (loaderId) {
             case ID_WEATHER_LOADER:
@@ -136,36 +144,46 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d(TAG, "onLoadFinished " + data.getCount());
+        mSwipeRefreshLayout.setRefreshing(false);
         mAdapter.swapCursor(data);
         if (data.getCount() != 0) {
-            showWeatherDataView();
-        } else {
-            showError(getString(R.string.fail_results));
+            showData();
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        mSwipeRefreshLayout.setRefreshing(false);
         mAdapter.swapCursor(null);
     }
 
-    private void showWeatherDataView() {
-        /* First, hide the loading indicator */
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
-        /* Finally, make sure the weather data is visible */
-        mRecyclerView.setVisibility(View.VISIBLE);
+    @Override
+    public void onRefresh() {
+
+        SyncUtils.startImmediateSync(this);
+
+        if (!AirToNetworkUtils.isOnline(this) && mAdapter.getItemCount() == 0) {
+            showError(getString(R.string.no_network_no_weather_data));
+        } else if (!AirToNetworkUtils.isOnline(this)) {
+            showError(getString(R.string.no_network));
+        }
+
     }
 
-    private void showLoading() {
-        /* Then, hide the weather data */
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        /* Finally, show the loading indicator */
-        mLoadingIndicator.setVisibility(View.VISIBLE);
+    private void showData() {
+        if (mAdapter.getItemCount() != 0) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mErrorData.setVisibility(View.GONE);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            mErrorData.setVisibility(View.VISIBLE);
+        }
     }
 
     private void showError(String errorMessage) {
         /* First, hide the loading indicator */
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
+        mSwipeRefreshLayout.setRefreshing(false);
         /* Then, show error message */
         Snackbar.make(findViewById(R.id.activity_main),
                 errorMessage, Snackbar.LENGTH_LONG)

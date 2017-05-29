@@ -4,6 +4,18 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="blue">#0099CC</color>
+    <color name="red">#F44336</color>
+    <color name="green">#669900</color>
+    <color name="orange">#FF8800</color>
+
+    <array name="swipeColor">
+        <item>@color/green</item>
+        <item>@color/red</item>
+        <item>@color/blue</item>
+        <item>@color/orange</item>
+    </array>
+
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
 </resources>

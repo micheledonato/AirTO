@@ -53,7 +53,7 @@ public class AirToWeatherUtils {
 
         weatherIcon = weatherIcon.replaceAll("-", "_");
         weatherIcon = "ic_" + weatherIcon;
-        Log.d(TAG, "weatherIcon: " + weatherIcon);
+//        Log.d(TAG, "weatherIcon: " + weatherIcon);
 
         int weatherImageId;
         switch (weatherIcon) {
@@ -79,7 +79,7 @@ public class AirToWeatherUtils {
                 weatherImageId = R.drawable.ic_cloudy;
         }
 
-        Log.d(TAG, "weatherImageId: " + weatherImageId);
+//        Log.d(TAG, "weatherImageId: " + weatherImageId);
         return weatherImageId;
     }
 }

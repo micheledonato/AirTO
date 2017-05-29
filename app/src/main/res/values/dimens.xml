@@ -13,4 +13,6 @@
     <dimen name="forecast_text_size">28dp</dimen>
     <dimen name="forecast_temperature_space">8dp</dimen>
 
+    <dimen name="error_data_padding_vertical">16dp</dimen>
+
 </resources>

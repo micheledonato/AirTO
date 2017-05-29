@@ -77,6 +77,7 @@ public class WeatherProvider extends ContentProvider {
                 }
 
                 if (rowsInserted > 0) {
+                    Log.d(TAG, "Rows inserted " + rowsInserted);
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
 
@@ -149,6 +150,7 @@ public class WeatherProvider extends ContentProvider {
         }
 
         if (numRowsDeleted != 0) {
+            Log.d(TAG, "Rows deleted " + numRowsDeleted);
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return numRowsDeleted;

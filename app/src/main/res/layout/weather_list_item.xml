@@ -28,7 +28,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintLeft_toRightOf="@+id/weather_icon"
-        tools:text="Domani 7 maggio" />
+        tools:text="Mercoledì 8 maggio" />
 
     <TextView
         android:id="@+id/weather_description"

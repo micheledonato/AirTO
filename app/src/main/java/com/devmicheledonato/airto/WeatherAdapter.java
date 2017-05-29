@@ -3,6 +3,7 @@ package com.devmicheledonato.airto;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,38 +52,43 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        Log.d(TAG, "onCreateViewHolder");
 
-        Log.d(TAG, "onCreateViewHolder");
+        ViewHolder vh;
+        View view;
 
         int layoutId;
-//        switch (viewType) {
-//            case VIEW_TYPE_TODAY:
+        switch (viewType) {
+            case VIEW_TYPE_TODAY:
 //                Log.d(TAG, "VIEW_TYPE_TODAY");
-//                layoutId = R.layout.weather_today_list_item;
-//                break;
-//            case VIEW_TYPE_TOMORROW:
+                layoutId = R.layout.weather_today_list_item;
+                view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
+                vh = new ViewHolderIpqa(view);
+                break;
+            case VIEW_TYPE_TOMORROW:
 //                Log.d(TAG, "VIEW_TYPE_TOMORROW");
-//                layoutId = R.layout.weather_tomorrow_list_item;
-//                break;
-//            case VIEW_TYPE_FUTURE_DAY:
+                layoutId = R.layout.weather_tomorrow_list_item;
+                view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
+                vh = new ViewHolderIpqa(view);
+                break;
+            case VIEW_TYPE_FUTURE_DAY:
 //                Log.d(TAG, "VIEW_TYPE_FUTURE_DAY");
-//                layoutId = R.layout.weather_list_item;
-//                break;
-//            default:
-//                throw new IllegalArgumentException("Invalid view type, value of " + viewType);
-//        }
+                layoutId = R.layout.weather_list_item;
+                view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
+                vh = new ViewHolder(view);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid view type, value of " + viewType);
+        }
 
-        //TODO REMOVE
-        layoutId = R.layout.weather_list_item;
-        
-        View view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
         view.setFocusable(true);
-        return new ViewHolder(view);
+
+        return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder");
+//        Log.d(TAG, "onBindViewHolder");
 
         mCursor.moveToPosition(position);
 
@@ -90,28 +96,33 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         String weatherIcon = mCursor.getString(MainActivity.INDEX_WEATHER_ICON);
 
         int weatherImageId = AirToWeatherUtils.getResourceIdForWeatherCondition(mContext, weatherIcon);
+        holder.weatherIcon.setImageResource(weatherImageId);
+
+        String ipqa = "Qualità dell'aria ";
 
         int viewType = getItemViewType(position);
         switch (viewType) {
             case VIEW_TYPE_TODAY:
-                // Get large icon
+                // Set the image color to white
+                holder.weatherIcon.setColorFilter(ContextCompat.getColor(mContext, android.R.color.white));
+                String todayIpqa = mCursor.getString(MainActivity.INDEX_WEATHER_IPQA);
+                ViewHolderIpqa.class.cast(holder).ipqa.setText(ipqa.concat(todayIpqa));
                 break;
             case VIEW_TYPE_TOMORROW:
-                // Get ? icon
+//                String tomorrowIpqa = mCursor.getString(MainActivity.INDEX_WEATHER_IPQA);
+//                ViewHolderIpqa.class.cast(holder).ipqa.setText(ipqa.concat(tomorrowIpqa));
                 break;
             case VIEW_TYPE_FUTURE_DAY:
-                // Get small icon
+                // Nothing
                 break;
             default:
                 throw new IllegalArgumentException("Invalid view type, value of " + viewType);
         }
 
-        holder.weatherIcon.setImageResource(weatherImageId);
-
         long dateInMillis = mCursor.getLong(MainActivity.INDEX_WEATHER_DATE);
-        String dateString = AirToDateUtils.getReadableDateString(mContext, dateInMillis);
+        String dateString = AirToDateUtils.getFriendlyDateString(mContext, dateInMillis);
         holder.date.setText(dateString);
-        Log.d(TAG, "Position: " + position + " Date millis: " + dateInMillis + " dateString: " + dateString);
+//        Log.d(TAG, "Position: " + position + " Date millis: " + dateInMillis + " dateString: " + dateString);
 
         holder.weatherDescription.setText(mCursor.getString(MainActivity.INDEX_WEATHER_SUMMARY));
 
@@ -151,7 +162,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         TextView weatherDescription;
         TextView min;
         TextView max;
-        TextView ipqa;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -160,6 +170,16 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             weatherDescription = (TextView) itemView.findViewById(R.id.weather_description);
             min = (TextView) itemView.findViewById(R.id.low_temperature);
             max = (TextView) itemView.findViewById(R.id.high_temperature);
+        }
+    }
+
+    public class ViewHolderIpqa extends ViewHolder {
+
+        TextView ipqa;
+
+        public ViewHolderIpqa(View itemView) {
+            super(itemView);
+            ipqa = (TextView) itemView.findViewById(R.id.ipqa);
         }
     }
 }

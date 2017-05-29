@@ -1,13 +1,19 @@
 package com.devmicheledonato.airto.utils;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.devmicheledonato.airto.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,8 +22,22 @@ import java.util.concurrent.TimeUnit;
 
 public class AirToDateUtils {
 
+    private static final String TAG = AirToDateUtils.class.getSimpleName();
+
     /* Milliseconds in a day */
     public static final long DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1);
+    /* Milliseconds in a half day */
+    public static final long HALF_DAY = TimeUnit.HOURS.toMillis(12);
+
+    /**
+     * Date at midday
+     *
+     * @param date
+     * @return
+     */
+    public static long getDateAtMidday(long date) {
+        return date + HALF_DAY;
+    }
 
     /**
      * This method returns the number of days since the epoch (January 01, 1970, 12:00 Midnight UTC)
@@ -28,18 +48,6 @@ public class AirToDateUtils {
      */
     private static long elapsedDaysSinceEpoch(long utcDate) {
         return TimeUnit.MILLISECONDS.toDays(utcDate);
-    }
-
-    /**
-     * Normalizes a date (in milliseconds).
-     *
-     * @param date The date (in milliseconds) to normalize
-     * @return The UTC date at 12 midnight of the date
-     */
-    public static long normalizeDate(long date) {
-        long daysSinceEpoch = elapsedDaysSinceEpoch(date);
-        long millisFromEpochToTodayAtMidnightUtc = daysSinceEpoch * DAY_IN_MILLIS;
-        return millisFromEpochToTodayAtMidnightUtc;
     }
 
     public static long getTodayAtMidnight() {
@@ -87,33 +95,46 @@ public class AirToDateUtils {
         long daysFromEpochToToday = elapsedDaysSinceEpoch(System.currentTimeMillis());
 
         int daysAfterToday = (int) (daysFromEpochToProvidedDate - daysFromEpochToToday);
+        Log.d(TAG, dateInMillis + " - " + System.currentTimeMillis());
+        Log.d(TAG, daysFromEpochToProvidedDate + " - " + daysFromEpochToToday + " = " + daysAfterToday);
 
         switch (daysAfterToday) {
             case 0:
                 return context.getString(R.string.today);
             case 1:
                 return context.getString(R.string.tomorrow);
-
             default:
-                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", getCurrentLocale(context));
                 return dayFormat.format(dateInMillis);
         }
     }
 
     /**
-     * In order to ensure consistent inserts into WeatherProvider, we check that dates have been
-     * normalized before they are inserted. If they are not normalized, we don't want to accept
-     * them, and leave it up to the caller to throw an IllegalArgumentException.
+     * Replace the day name with Today or Tomorrow
      *
-     * @param millisSinceEpoch Milliseconds since January 1, 1970 at midnight
-     * @return true if the date represents the beginning of a day in Unix time, false otherwise
+     * @param context
+     * @param dateInMillis
+     * @return the string of friendly date
      */
-    public static boolean isDateNormalized(long millisSinceEpoch) {
-        boolean isDateNormalized = false;
-        if (millisSinceEpoch % DAY_IN_MILLIS == 0) {
-            isDateNormalized = true;
-        }
+    public static String getFriendlyDateString(Context context, long dateInMillis) {
+        String dayName = getDayName(context, dateInMillis);
+        String readableDate = getReadableDateString(context, dateInMillis);
+        String localizedDayName = new SimpleDateFormat("EEEE", getCurrentLocale(context)).format(dateInMillis);
+        return readableDate.replace(localizedDayName, dayName);
+    }
 
-        return isDateNormalized;
+    /**
+     * Provide the current Locale of device configuration
+     *
+     * @param context
+     * @return current Locale
+     */
+    private static Locale getCurrentLocale(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return context.getResources().getConfiguration().getLocales().get(0);
+        } else {
+            //noinspection deprecation
+            return context.getResources().getConfiguration().locale;
+        }
     }
 }
