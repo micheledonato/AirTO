@@ -62,6 +62,20 @@ public class WeatherContract {
         public static final String COLUMN_IPQA = "ipqa";
 
         /**
+         * Builds a URI that adds the weather date to the end of the forecast content URI path.
+         * This is used to query details about a single weather entry by date. This is what we
+         * use for the detail view query. We assume a normalized date is passed to this method.
+         *
+         * @param date Normalized date in milliseconds
+         * @return Uri to query details about a single weather entry
+         */
+        public static Uri buildWeatherUriWithDate(long date) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(Long.toString(date))
+                    .build();
+        }
+
+        /**
          * Returns just the selection part of the weather query from a normalized today value.
          * This is used to get a weather forecast from today's date. To make this easy to use
          * in compound selection, we embed today's date as an argument in the query.

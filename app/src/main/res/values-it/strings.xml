@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="action_settings">Impostazioni</string>
     <string name="today">Oggi</string>
@@ -7,5 +7,15 @@
     <string name="error_data">Nessun informazione meteo&#8230;\nCaricheremo i dati quando la rete sarà disponibile.</string>
     <string name="no_network">Aggiorneremo quando la rete sarà disponibile.</string>
     <string name="no_network_no_weather_data">Rete non disponibile!</string>
+
+    <string name="notification_on">Ogni giorno riceverai una notifica</string>
+    <string name="notification_off">Disattiva</string>
+
+    <string name="format_notification">
+        Meteo:<xliff:g id="condition">%1$s</xliff:g>
+        Alta:<xliff:g id="high">%2$s</xliff:g>
+        Bassa:<xliff:g id="low">%3$s</xliff:g>
+        <xliff:g id="ipqa">%4$s</xliff:g>
+    </string>
 
 </resources>

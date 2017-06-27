@@ -42,7 +42,7 @@
         app:layout_constraintLeft_toLeftOf="@+id/date"
         app:layout_constraintRight_toLeftOf="@+id/high_temperature"
         app:layout_constraintTop_toTopOf="@+id/guideline"
-        tools:text="Pioggia leggera in mattinata e nel pomeriggio." />
+        tools:text="Pioggia leggera fino a pomeriggio, ricominciando da in serata." />
 
     <TextView
         android:id="@+id/high_temperature"

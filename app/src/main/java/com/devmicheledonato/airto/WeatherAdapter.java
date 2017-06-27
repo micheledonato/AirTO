@@ -98,19 +98,20 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         int weatherImageId = AirToWeatherUtils.getResourceIdForWeatherCondition(mContext, weatherIcon);
         holder.weatherIcon.setImageResource(weatherImageId);
 
-        String ipqa = "Qualità dell'aria ";
-
         int viewType = getItemViewType(position);
         switch (viewType) {
             case VIEW_TYPE_TODAY:
                 // Set the image color to white
                 holder.weatherIcon.setColorFilter(ContextCompat.getColor(mContext, android.R.color.white));
+
                 String todayIpqa = mCursor.getString(MainActivity.INDEX_WEATHER_IPQA);
-                ViewHolderIpqa.class.cast(holder).ipqa.setText(ipqa.concat(todayIpqa));
+                String todayIpqaDescription = AirToWeatherUtils.getIpqaString(mContext, todayIpqa);
+                ViewHolderIpqa.class.cast(holder).ipqa.setText(todayIpqaDescription);
                 break;
             case VIEW_TYPE_TOMORROW:
 //                String tomorrowIpqa = mCursor.getString(MainActivity.INDEX_WEATHER_IPQA);
-//                ViewHolderIpqa.class.cast(holder).ipqa.setText(ipqa.concat(tomorrowIpqa));
+//                String tomorrowIpqaDescription = AirToWeatherUtils.getIpqaString(mContext, tomorrowIpqa);
+//                ViewHolderIpqa.class.cast(holder).ipqa.setText(tomorrowIpqaDescription);
                 break;
             case VIEW_TYPE_FUTURE_DAY:
                 // Nothing
@@ -124,7 +125,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         holder.date.setText(dateString);
 //        Log.d(TAG, "Position: " + position + " Date millis: " + dateInMillis + " dateString: " + dateString);
 
-        holder.weatherDescription.setText(mCursor.getString(MainActivity.INDEX_WEATHER_SUMMARY));
+        String description = mCursor.getString(MainActivity.INDEX_WEATHER_SUMMARY);
+        if (description != null) {
+            holder.weatherDescription.setText(description);
+        }
 
         double minTemp = mCursor.getLong(MainActivity.INDEX_WEATHER_MIN_TEMP);
         String minString = AirToWeatherUtils.formatTemperature(mContext, minTemp);

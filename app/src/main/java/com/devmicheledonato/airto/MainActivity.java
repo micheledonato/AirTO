@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onRefresh() {
-
+        Log.d(TAG, "onRefresh ");
         SyncUtils.startImmediateSync(this);
 
         if (!AirToNetworkUtils.isOnline(this) && mAdapter.getItemCount() == 0) {

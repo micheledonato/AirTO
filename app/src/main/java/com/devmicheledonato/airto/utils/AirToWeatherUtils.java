@@ -49,6 +49,17 @@ public class AirToWeatherUtils {
         return String.format(context.getString(temperatureFormatResourceId), temperature);
     }
 
+    public static String getIpqaString(Context context, String ipqa) {
+
+        String description = "Qualità dell'aria N.D.";
+
+        if (ipqa != null) {
+            ipqa = ipqa.toUpperCase();
+            description = description.replace(" N.D.", "\n" + ipqa);
+        }
+        return description;
+    }
+
     public static int getResourceIdForWeatherCondition(Context context, String weatherIcon) {
 
         weatherIcon = weatherIcon.replaceAll("-", "_");

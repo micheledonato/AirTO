@@ -24,6 +24,8 @@ public class AirToDateUtils {
 
     private static final String TAG = AirToDateUtils.class.getSimpleName();
 
+    public static final TimeZone LOCAL_TIME_ZONE = TimeZone.getTimeZone("Italy/Turin");
+
     /* Milliseconds in a day */
     public static final long DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1);
     /* Milliseconds in a half day */
@@ -136,5 +138,11 @@ public class AirToDateUtils {
             //noinspection deprecation
             return context.getResources().getConfiguration().locale;
         }
+    }
+
+    public static long normalizeDate(long date) {
+        long daysSinceEpoch = elapsedDaysSinceEpoch(date);
+        long millisFromEpochToTodayAtMidnightUtc = daysSinceEpoch * DAY_IN_MILLIS;
+        return millisFromEpochToTodayAtMidnightUtc;
     }
 }

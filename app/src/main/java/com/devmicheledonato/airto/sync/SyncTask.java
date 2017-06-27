@@ -8,6 +8,9 @@ import android.util.Log;
 import com.devmicheledonato.airto.data.WeatherContract;
 import com.devmicheledonato.airto.utils.AirToNetworkUtils;
 import com.devmicheledonato.airto.utils.AirToJsonUtils;
+import com.devmicheledonato.airto.utils.AirToNotificationUtils;
+
+import org.json.JSONObject;
 
 import java.net.URL;
 
@@ -49,6 +52,8 @@ public class SyncTask {
                 contentResolver.bulkInsert(
                         WeatherContract.WeatherEntry.CONTENT_URI,
                         weatherValues);
+
+                AirToNotificationUtils.notifyUserOfNewWeather(context);
             }
 
         } catch (Exception e) {
