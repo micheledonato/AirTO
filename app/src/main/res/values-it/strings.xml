@@ -8,9 +8,6 @@
     <string name="no_network">Aggiorneremo quando la rete sarà disponibile.</string>
     <string name="no_network_no_weather_data">Rete non disponibile!</string>
 
-    <string name="notification_on">Ogni giorno riceverai una notifica</string>
-    <string name="notification_off">Disattiva</string>
-
     <string name="format_notification">
         Meteo:<xliff:g id="condition">%1$s</xliff:g>
         \nAlta:<xliff:g id="high">%2$s</xliff:g>
@@ -28,5 +25,9 @@
     <string name="thunderstorm">Tempesta</string>
     <string name="tornado">Tornado</string>
     <string name="wind">Vento</string>
+
+    <string name="pref_enable_notifications_label">Notifiche meteo</string>
+    <string name="pref_enable_notifications_true">Ogni giorno riceverai una notifica</string>
+    <string name="pref_enable_notifications_false">Disattivate</string>
 
 </resources>
