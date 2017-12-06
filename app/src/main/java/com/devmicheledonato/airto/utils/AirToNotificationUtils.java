@@ -1,14 +1,18 @@
 package com.devmicheledonato.airto.utils;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.devmicheledonato.airto.R;
+import com.devmicheledonato.airto.data.AirToPreferences;
 import com.devmicheledonato.airto.data.WeatherContract;
 
 /**
@@ -52,10 +56,11 @@ public class AirToNotificationUtils {
 
         Log.d(TAG, "notifyUserOfNewWeather");
 
-        long dateTimeMillis = 1498557600;
+        long dateTimeMillis = AirToDateUtils.getTodayAtMidnight();
+        long dateNormalizedMillis = AirToDateUtils.getDateAtMidday(dateTimeMillis);
 
         Uri todayWeatherUri = WeatherContract.WeatherEntry.
-                buildWeatherUriWithDate(dateTimeMillis * 1000);
+                buildWeatherUriWithDate(dateNormalizedMillis);
 
         Cursor todayWeatherCursor = context.getContentResolver().query(
                 todayWeatherUri,
@@ -75,26 +80,35 @@ public class AirToNotificationUtils {
 
             String notificationTitle = context.getString(R.string.app_name);
 
-            String notificationText = getNotificationText(context, weatherImageId, max, min, ipqa);
+            String notificationText = getNotificationText(context, weatherIcon, max, min, ipqa);
 
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                     .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                     .setSmallIcon(weatherImageId)
                     .setContentTitle(notificationTitle)
                     .setContentText(notificationText)
-                    .setAutoCancel(true);
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(notificationText))
+                    .setAutoCancel(true)
+                    .setDefaults(Notification.DEFAULT_ALL);
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(WEATHER_NOTIFICATION_ID, notificationBuilder.build());
+
+            /*
+             * Since we just showed a notification, save the current time. That way, we can check
+             * next time the weather is refreshed if we should show another notification.
+             */
+            AirToPreferences.saveLastNotificationTime(context, System.currentTimeMillis());
         }
 
         /* Always close your cursor when you're done with it to avoid wasting resources. */
         todayWeatherCursor.close();
     }
 
-    private static String getNotificationText(Context context, int weatherImageId, double max, double min, String ipqa) {
+    private static String getNotificationText(Context context, String weatherIcon, double max, double min, String ipqa) {
 
-        String description = "";
+        String description = AirToWeatherUtils.getForecastDescriptionForWeatherCondition(context, weatherIcon);
 
         String notificationFormat = context.getString(R.string.format_notification);
 
@@ -106,4 +120,5 @@ public class AirToNotificationUtils {
 
         return notificationText;
     }
+
 }

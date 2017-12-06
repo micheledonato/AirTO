@@ -105,8 +105,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
                 holder.weatherIcon.setColorFilter(ContextCompat.getColor(mContext, android.R.color.white));
 
                 String todayIpqa = mCursor.getString(MainActivity.INDEX_WEATHER_IPQA);
+                String description = "Qualità dell'aria\n";
                 String todayIpqaDescription = AirToWeatherUtils.getIpqaString(mContext, todayIpqa);
+                todayIpqaDescription = description.concat(todayIpqaDescription);
                 ViewHolderIpqa.class.cast(holder).ipqa.setText(todayIpqaDescription);
+                int ipqaImageId = AirToWeatherUtils.getResourseIdForIpqaCondition(mContext, todayIpqa);
+                ViewHolderIpqa.class.cast(holder).airIcon.setImageResource(ipqaImageId);
                 break;
             case VIEW_TYPE_TOMORROW:
 //                String tomorrowIpqa = mCursor.getString(MainActivity.INDEX_WEATHER_IPQA);
@@ -180,10 +184,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     public class ViewHolderIpqa extends ViewHolder {
 
         TextView ipqa;
+        ImageView airIcon;
 
         public ViewHolderIpqa(View itemView) {
             super(itemView);
             ipqa = (TextView) itemView.findViewById(R.id.ipqa);
+            airIcon = (ImageView) itemView.findViewById(R.id.air_icon);
         }
     }
 }

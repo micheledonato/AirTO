@@ -3,8 +3,10 @@ package com.devmicheledonato.airto.sync;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.util.Log;
 
+import com.devmicheledonato.airto.data.AirToPreferences;
 import com.devmicheledonato.airto.data.WeatherContract;
 import com.devmicheledonato.airto.utils.AirToNetworkUtils;
 import com.devmicheledonato.airto.utils.AirToJsonUtils;
@@ -53,7 +55,32 @@ public class SyncTask {
                         WeatherContract.WeatherEntry.CONTENT_URI,
                         weatherValues);
 
-                AirToNotificationUtils.notifyUserOfNewWeather(context);
+                /*
+                 * Finally, after we insert data into the ContentProvider, determine whether or not
+                 * we should notify the user that the weather has been refreshed.
+                 */
+                boolean notificationsEnabled = AirToPreferences.areNotificationsEnabled(context);
+
+                /*
+                 * If the last notification was shown was more than 1 day ago, we want to send
+                 * another notification to the user that the weather has been updated. Remember,
+                 * it's important that you shouldn't spam your users with notifications.
+                 */
+                long timeSinceLastNotification = AirToPreferences.getEllapsedTimeSinceLastNotification(context);
+
+                boolean oneDayPassedSinceLastNotification = false;
+
+                if (timeSinceLastNotification >= DateUtils.DAY_IN_MILLIS) {
+                    oneDayPassedSinceLastNotification = true;
+                }
+
+                /*
+                 * We only want to show the notification if the user wants them shown and we
+                 * haven't shown a notification in the past day.
+                 */
+                if (notificationsEnabled && oneDayPassedSinceLastNotification) {
+                    AirToNotificationUtils.notifyUserOfNewWeather(context);
+                }
             }
 
         } catch (Exception e) {

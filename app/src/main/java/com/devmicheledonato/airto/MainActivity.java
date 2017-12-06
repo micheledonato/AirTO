@@ -1,5 +1,6 @@
 package com.devmicheledonato.airto;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
@@ -20,7 +21,10 @@ import android.widget.TextView;
 
 import com.devmicheledonato.airto.data.WeatherContract;
 import com.devmicheledonato.airto.sync.SyncUtils;
+import com.devmicheledonato.airto.utils.AirToDateUtils;
 import com.devmicheledonato.airto.utils.AirToNetworkUtils;
+
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener {
@@ -204,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            // TODO settings
 //            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }

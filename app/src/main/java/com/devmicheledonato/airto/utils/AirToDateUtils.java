@@ -2,12 +2,13 @@ package com.devmicheledonato.airto.utils;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
+
 import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.devmicheledonato.airto.R;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,12 +25,14 @@ public class AirToDateUtils {
 
     private static final String TAG = AirToDateUtils.class.getSimpleName();
 
-    public static final TimeZone LOCAL_TIME_ZONE = TimeZone.getTimeZone("Italy/Turin");
+    public static final TimeZone ITALY_TIME_ZONE = TimeZone.getTimeZone("Europe/Rome");
+    public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     /* Milliseconds in a day */
     public static final long DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1);
     /* Milliseconds in a half day */
     public static final long HALF_DAY = TimeUnit.HOURS.toMillis(12);
+
 
     /**
      * Date at midday

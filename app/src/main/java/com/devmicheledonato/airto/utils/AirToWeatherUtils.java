@@ -27,6 +27,13 @@ public class AirToWeatherUtils {
     private static final String WIND = "ic_wind";
     private static final String SLEET = "ic_sleet";
 
+    private static final String OTTIMA = "ic_ottima";
+    private static final String BUONA = "ic_buona";
+    private static final String ACCETTABILE = "ic_accettabile";
+    private static final String CATTIVA = "ic_cattiva";
+    private static final String PESSIMA = "ic_pessima";
+
+
     /**
      * Temperature data is stored in Celsius by our app. Depending on the user's preference,
      * the app may need to display the temperature in Fahrenheit. This method will perform that
@@ -51,13 +58,11 @@ public class AirToWeatherUtils {
 
     public static String getIpqaString(Context context, String ipqa) {
 
-        String description = "Qualità dell'aria N.D.";
-
-        if (ipqa != null) {
-            ipqa = ipqa.toUpperCase();
-            description = description.replace(" N.D.", "\n" + ipqa);
+        String ipqaString = "N.D.";
+        if (ipqa != null && !ipqa.equals("NOT_AVAILABLE")) {
+            ipqaString = ipqa.toUpperCase();
         }
-        return description;
+        return ipqaString;
     }
 
     public static int getResourceIdForWeatherCondition(Context context, String weatherIcon) {
@@ -80,8 +85,7 @@ public class AirToWeatherUtils {
             case THUNDERSTORM:
             case TORNADO:
             case WIND:
-                weatherImageId = context.getResources().getIdentifier(weatherIcon, "drawable",
-                        context.getPackageName());
+                weatherImageId = context.getResources().getIdentifier(weatherIcon, "drawable", context.getPackageName());
                 break;
             case SLEET:
                 weatherImageId = R.drawable.ic_snow;
@@ -92,5 +96,80 @@ public class AirToWeatherUtils {
 
 //        Log.d(TAG, "weatherImageId: " + weatherImageId);
         return weatherImageId;
+    }
+
+    public static String getForecastDescriptionForWeatherCondition(Context context, String weatherIcon) {
+
+        weatherIcon = weatherIcon.replaceAll("-", "_");
+        weatherIcon = "ic_" + weatherIcon;
+
+        String forecastDescription;
+        switch (weatherIcon) {
+            case CLEAR_DAY:
+            case CLEAR_NIGHT:
+                forecastDescription = context.getString(R.string.clear);
+                break;
+            case CLOUDY:
+                forecastDescription = context.getString(R.string.cloudy);
+                break;
+            case FOG:
+                forecastDescription = context.getString(R.string.fog);
+                break;
+            case HAIL:
+                forecastDescription = context.getString(R.string.hail);
+                break;
+            case PARTLY_CLOUDY_DAY:
+            case PARTLY_CLOUDY_NIGHT:
+                forecastDescription = context.getString(R.string.partly_cloudy);
+                break;
+            case RAIN:
+                forecastDescription = context.getString(R.string.rain);
+                break;
+            case SNOW:
+                forecastDescription = context.getString(R.string.snow);
+                break;
+            case THUNDERSTORM:
+                forecastDescription = context.getString(R.string.thunderstorm);
+                break;
+            case TORNADO:
+                forecastDescription = context.getString(R.string.tornado);
+                break;
+            case WIND:
+                forecastDescription = context.getString(R.string.wind);
+                break;
+            case SLEET:
+                forecastDescription = context.getString(R.string.snow);
+                break;
+            default:
+                forecastDescription = context.getString(R.string.cloudy);
+        }
+
+        return forecastDescription;
+    }
+
+    public static int getResourseIdForIpqaCondition(Context context, String ipqa) {
+
+        String ipqaCondition = "";
+        try {
+            ipqaCondition = "ic_" + ipqa.toLowerCase();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        int ipqaImageId;
+
+        switch (ipqaCondition) {
+            case OTTIMA:
+            case BUONA:
+            case ACCETTABILE:
+            case CATTIVA:
+            case PESSIMA:
+                ipqaImageId = context.getResources().getIdentifier(ipqaCondition, "drawable", context.getPackageName());
+                break;
+            default:
+                ipqaImageId = R.drawable.ic_non_disponibile;
+        }
+
+        return ipqaImageId;
     }
 }

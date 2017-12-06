@@ -29,7 +29,8 @@
         <provider
             android:name=".data.WeatherProvider"
             android:authorities="@string/content_authority"
-            android:exported="false"/>
+            android:exported="false" />
+
     </application>
 
 </manifest>

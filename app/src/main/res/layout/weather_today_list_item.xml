@@ -56,7 +56,7 @@
         app:layout_constraintRight_toLeftOf="@+id/horizontal_middle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.6"
-        tools:src="@drawable/ic_clear_day"
+        tools:src="@drawable/ic_cloudy"
         tools:tint="@android:color/white" />
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -104,7 +104,6 @@
         app:layout_constraintVertical_bias="0.9"
         tools:text="10\u00b0" />
 
-
     <TextView
         android:id="@+id/ipqa"
         android:layout_width="wrap_content"
@@ -123,12 +122,12 @@
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/ic_wind"
+        android:padding="30dp"
         app:layout_constraintBottom_toBottomOf="@id/weather_icon"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toRightOf="@+id/horizontal_middle"
         app:layout_constraintRight_toRightOf="parent"
-        tools:tint="@android:color/white" />
+        tools:src="@drawable/ic_ottima" />
 
     <!-- Text that describes weather condition -->
     <TextView
@@ -136,6 +135,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:paddingEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"

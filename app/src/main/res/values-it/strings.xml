@@ -13,9 +13,20 @@
 
     <string name="format_notification">
         Meteo:<xliff:g id="condition">%1$s</xliff:g>
-        Alta:<xliff:g id="high">%2$s</xliff:g>
+        \nAlta:<xliff:g id="high">%2$s</xliff:g>
         Bassa:<xliff:g id="low">%3$s</xliff:g>
-        <xliff:g id="ipqa">%4$s</xliff:g>
+        \nQualità dell\'aria:<xliff:g id="ipqa">%4$s</xliff:g>
     </string>
+
+    <string name="clear">Sereno</string>
+    <string name="cloudy">Nuvoloso</string>
+    <string name="fog">Nebbia</string>
+    <string name="hail">Grandine</string>
+    <string name="partly_cloudy">Parzialmente nuvoloso</string>
+    <string name="rain">Pioggia</string>
+    <string name="snow">Neve</string>
+    <string name="thunderstorm">Tempesta</string>
+    <string name="tornado">Tornado</string>
+    <string name="wind">Vento</string>
 
 </resources>
