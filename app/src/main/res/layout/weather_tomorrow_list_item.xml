@@ -45,6 +45,16 @@
         tools:text="Pioggia leggera in mattinata e nel pomeriggio." />
 
     <TextView
+        android:id="@+id/ipqa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/weather_description"
+        app:layout_constraintLeft_toLeftOf="@id/weather_description"
+        tools:text="Qualità dell'aria: BUONA" />
+
+    <TextView
         android:id="@+id/high_temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

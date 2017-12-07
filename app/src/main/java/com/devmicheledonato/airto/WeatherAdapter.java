@@ -113,9 +113,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
                 ViewHolderIpqa.class.cast(holder).airIcon.setImageResource(ipqaImageId);
                 break;
             case VIEW_TYPE_TOMORROW:
-//                String tomorrowIpqa = mCursor.getString(MainActivity.INDEX_WEATHER_IPQA);
-//                String tomorrowIpqaDescription = AirToWeatherUtils.getIpqaString(mContext, tomorrowIpqa);
-//                ViewHolderIpqa.class.cast(holder).ipqa.setText(tomorrowIpqaDescription);
+                String tomorrowIpqa = mCursor.getString(MainActivity.INDEX_WEATHER_IPQA);
+                String tomorrowDescription = "Qualità dell'aria: ";
+                String tomorrowIpqaDescription = AirToWeatherUtils.getIpqaString(mContext, tomorrowIpqa);
+                tomorrowIpqaDescription = tomorrowDescription.concat(tomorrowIpqaDescription);
+                ViewHolderIpqa.class.cast(holder).ipqa.setText(tomorrowIpqaDescription);
                 break;
             case VIEW_TYPE_FUTURE_DAY:
                 // Nothing
