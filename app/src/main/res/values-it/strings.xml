@@ -30,4 +30,6 @@
     <string name="pref_enable_notifications_true">Ogni giorno riceverai una notifica</string>
     <string name="pref_enable_notifications_false">Disattivate</string>
 
+    <string name="developer">Sviluppata da\nMICHELE DONATO</string>
+
 </resources>
