@@ -2,7 +2,9 @@ package com.devmicheledonato.airto.utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.devmicheledonato.airto.MainActivity;
 import com.devmicheledonato.airto.R;
 import com.devmicheledonato.airto.data.AirToPreferences;
 import com.devmicheledonato.airto.data.WeatherContract;
@@ -91,6 +94,13 @@ public class AirToNotificationUtils {
                             .bigText(notificationText))
                     .setAutoCancel(true)
                     .setDefaults(Notification.DEFAULT_ALL);
+
+            Intent intent = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            if (pendingIntent != null) {
+                notificationBuilder.setContentIntent(pendingIntent);
+            }
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(WEATHER_NOTIFICATION_ID, notificationBuilder.build());
