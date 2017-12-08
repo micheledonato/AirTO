@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -211,6 +212,41 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
+        if (id == R.id.action_car_traffic_ban) {
+            showCarTrafficBanDialog();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showCarTrafficBanDialog() {
+        Log.d(TAG, "showCarTrafficBanDialog");
+
+        long dateTimeMillis = AirToDateUtils.getTodayAtMidnight();
+        long dateNormalizedMillis = AirToDateUtils.getDateAtMidday(dateTimeMillis);
+
+        Uri carBanUri = WeatherContract.WeatherEntry.
+                buildWeatherUriWithDate(dateNormalizedMillis);
+
+        Cursor carBanCursor = getContentResolver().query(
+                carBanUri,
+                new String[]{
+                        WeatherContract.WeatherEntry.COLUMN_LEVEL,
+                        WeatherContract.WeatherEntry.COLUMN_BLOCK_TYPE
+                },
+                null,
+                null,
+                null);
+
+        if (carBanCursor != null && carBanCursor.moveToFirst()) {
+            String level = carBanCursor.getString(0);
+            String blockType = carBanCursor.getString(1);
+
+            CarTrafficBanFragment carTrafficBanFragment = CarTrafficBanFragment.newInstance(level, blockType);
+            carTrafficBanFragment.setCancelable(true);
+            carTrafficBanFragment.show(getSupportFragmentManager(), CarTrafficBanFragment.FRAGMENT_TAG);
+        }
+
+        carBanCursor.close();
     }
 }

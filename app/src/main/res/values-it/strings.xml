@@ -31,5 +31,6 @@
     <string name="pref_enable_notifications_false">Disattivate</string>
 
     <string name="developer">Sviluppata da\nMICHELE DONATO</string>
+    <string name="action_car_traffic_ban">Blocco auto</string>
 
 </resources>

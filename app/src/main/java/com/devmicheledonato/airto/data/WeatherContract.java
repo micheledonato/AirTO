@@ -12,8 +12,6 @@ import com.devmicheledonato.airto.utils.AirToDateUtils;
 
 public class WeatherContract {
 
-    private static final String TAG = WeatherContract.class.getSimpleName();
-
     /**
      * The Content authority is a name for the entire content provider.
      */
@@ -60,6 +58,9 @@ public class WeatherContract {
         public static final String COLUMN_WEATHER_ICON = "weather_icon";
 
         public static final String COLUMN_IPQA = "ipqa";
+
+        public static final String COLUMN_LEVEL = "car_ban_level";
+        public static final String COLUMN_BLOCK_TYPE = "car_ban_block_type";
 
         /**
          * Builds a URI that adds the weather date to the end of the forecast content URI path.

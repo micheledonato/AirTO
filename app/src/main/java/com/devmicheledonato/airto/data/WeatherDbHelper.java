@@ -47,6 +47,9 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
                         WeatherEntry.COLUMN_IPQA + " TEXT, " +
 
+                        WeatherEntry.COLUMN_LEVEL + " TEXT, " +
+                        WeatherEntry.COLUMN_BLOCK_TYPE + " TEXT, " +
+
                         "UNIQUE (" + WeatherEntry.COLUMN_DATE + ") ON CONFLICT REPLACE);";
 
         db.execSQL(SQL_CREATE_WEATHER_TABLE);

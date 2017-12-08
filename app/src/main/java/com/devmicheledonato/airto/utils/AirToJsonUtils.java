@@ -31,7 +31,7 @@ public class AirToJsonUtils {
         private static final String MAX = "temperatureMax";
     }
 
-    public static ContentValues[] getWeatherContentValuesFromJson(Context context, String forecastJsonStr, String[] ipqa) throws JSONException {
+    public static ContentValues[] getWeatherContentValuesFromJson(Context context, String forecastJsonStr, String[] ipqa, String[] carTrafficBan) throws JSONException {
         JSONObject forecastJson = new JSONObject(forecastJsonStr);
 
         JSONObject jsonDaily = forecastJson.getJSONObject(DAILY);
@@ -68,6 +68,11 @@ public class AirToJsonUtils {
                 } else if (AirToDateUtils.getDayName(context, dateNormalizedMillis).equals(context.getString(R.string.tomorrow))) {
                     weatherValues.put(WeatherContract.WeatherEntry.COLUMN_IPQA, ipqa[3]);
                 }
+            }
+
+            if (carTrafficBan != null && i == 0) {
+                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LEVEL, carTrafficBan[0]);
+                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_BLOCK_TYPE, carTrafficBan[1]);
             }
 
             weatherContentValues[i] = weatherValues;

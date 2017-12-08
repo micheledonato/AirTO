@@ -44,6 +44,8 @@ public class AirToNetworkUtils {
     private static final String IPQA_URL =
             "http://www.cittametropolitana.torino.it/cms/ambiente/qualita-aria/dati-qualita-aria/ipqa";
 
+    private static final String CAR_TRAFFIC_BAN_URL = "http://www.comune.torino.it/";
+
     private static final String IPQA_NA = "NOT_AVAILABLE";
 
     /**
@@ -124,6 +126,25 @@ public class AirToNetworkUtils {
             Log.e(TAG, "IPQA TOMORROW error: " + e.getMessage());
         }
         return ipqa;
+    }
+
+    public static String[] getCarTrafficBan() throws IOException {
+
+        String[] carTrafficBan = new String[2];
+
+        Document doc = Jsoup.connect(CAR_TRAFFIC_BAN_URL).timeout(0).get();
+        Element table = doc.select("table[id=situazioneSmog] > tbody").first();
+        Iterator<Element> iteratorTR = table.select("tr").iterator();
+        iteratorTR.next();
+
+        Iterator<Element> iteratorTD = table.select("td").iterator();
+        iteratorTD.next();
+        String level = iteratorTD.next().text();
+        String blockType = iteratorTD.next().text();
+
+        carTrafficBan[0] = level;
+        carTrafficBan[1] = blockType;
+        return carTrafficBan;
     }
 
     public static boolean isOnline(Context context) {

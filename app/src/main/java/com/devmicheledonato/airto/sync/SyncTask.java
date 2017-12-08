@@ -39,7 +39,15 @@ public class SyncTask {
                 e.printStackTrace();
             }
 
-            ContentValues[] weatherValues = AirToJsonUtils.getWeatherContentValuesFromJson(context, jsonWeatherResponse, ipqaResponse);
+            String[] carTrafficBanResponse = null;
+            try {
+                carTrafficBanResponse = AirToNetworkUtils.getCarTrafficBan();
+            } catch (Exception e) {
+                Log.w(TAG, "carTrafficBanResponse has failed but continue to process weatherResponse.");
+                e.printStackTrace();
+            }
+
+            ContentValues[] weatherValues = AirToJsonUtils.getWeatherContentValuesFromJson(context, jsonWeatherResponse, ipqaResponse, carTrafficBanResponse);
 
             if (weatherValues != null && weatherValues.length != 0) {
                 ContentResolver contentResolver = context.getContentResolver();
