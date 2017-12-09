@@ -3,6 +3,7 @@
     <string name="app_name" translatable="false">AirTO</string>
     <string name="email" translatable="false">dev.michele.donato@gmail.com</string>
     <string name="developer">Developed by\nMICHELE DONATO</string>
+    <string name="city">Turin</string>
 
     <string name="content_authority" translatable="false">com.devmicheledonato.airto</string>
 
