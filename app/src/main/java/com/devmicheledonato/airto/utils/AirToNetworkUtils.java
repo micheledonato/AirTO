@@ -46,7 +46,7 @@ public class AirToNetworkUtils {
 
     private static final String CAR_TRAFFIC_BAN_URL = "http://www.comune.torino.it/";
 
-    private static final String IPQA_NA = "NOT_AVAILABLE";
+    public static final String IPQA_NA = "NOT_AVAILABLE";
 
     /**
      * Builds the URL used to talk to the weather server.
@@ -130,20 +130,26 @@ public class AirToNetworkUtils {
 
     public static String[] getCarTrafficBan() throws IOException {
 
-        String[] carTrafficBan = new String[2];
+        String[] carTrafficBan = new String[4];
 
         Document doc = Jsoup.connect(CAR_TRAFFIC_BAN_URL).timeout(0).get();
         Element table = doc.select("table[id=situazioneSmog] > tbody").first();
         Iterator<Element> iteratorTR = table.select("tr").iterator();
-        iteratorTR.next();
 
-        Iterator<Element> iteratorTD = table.select("td").iterator();
-        iteratorTD.next();
-        String level = iteratorTD.next().text();
-        String blockType = iteratorTD.next().text();
+        int i = 0;
+        do {
+            iteratorTR.next();
 
-        carTrafficBan[0] = level;
-        carTrafficBan[1] = blockType;
+            Iterator<Element> iteratorTD = table.select("td").iterator();
+            iteratorTD.next();
+            String level = iteratorTD.next().text();
+            String blockType = iteratorTD.next().text();
+
+            carTrafficBan[i++] = level;
+            carTrafficBan[i++] = blockType;
+
+        } while (iteratorTR.hasNext() && i < 4);
+
         return carTrafficBan;
     }
 

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -22,10 +21,7 @@ import android.widget.TextView;
 
 import com.devmicheledonato.airto.data.WeatherContract;
 import com.devmicheledonato.airto.sync.SyncUtils;
-import com.devmicheledonato.airto.utils.AirToDateUtils;
 import com.devmicheledonato.airto.utils.AirToNetworkUtils;
-
-import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener {
@@ -43,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
             WeatherContract.WeatherEntry.COLUMN_WEATHER_ICON,
             WeatherContract.WeatherEntry.COLUMN_IPQA,
-
+            WeatherContract.WeatherEntry.COLUMN_LEVEL,
+            WeatherContract.WeatherEntry.COLUMN_BLOCK_TYPE
     };
     /*
      * We store the indices of the values in the array of Strings above to more quickly be able to
@@ -56,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final int INDEX_WEATHER_MAX_TEMP = 3;
     public static final int INDEX_WEATHER_ICON = 4;
     public static final int INDEX_WEATHER_IPQA = 5;
+    public static final int INDEX_CAR_BAN_LEVEL = 6;
+    public static final int INDEX_CAR_BAN_BLOCK_TYPE = 7;
 
     /**
      * This ID will be used to identify the Loader responsible for loading our weather forecast.
@@ -68,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerView mRecyclerView;
     private WeatherAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private boolean hideCarBan = false;
+    private String[] mCarBan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.d(TAG, "onLoadFinished " + data.getCount());
         mSwipeRefreshLayout.setRefreshing(false);
         mAdapter.swapCursor(data);
+        showCarTrafficBanIcon(data);
         if (data.getCount() != 0) {
             showData();
         }
@@ -161,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader<Cursor> loader) {
         mSwipeRefreshLayout.setRefreshing(false);
         mAdapter.swapCursor(null);
+        showCarTrafficBanIcon(null);
     }
 
     @Override
@@ -201,6 +205,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         MenuInflater inflater = getMenuInflater();
         /* Use the inflater's inflate method to inflate our menu layout to this menu */
         inflater.inflate(R.menu.menu, menu);
+        if (hideCarBan) {
+            menu.findItem(R.id.action_car_traffic_ban).setVisible(false);
+        }
         /* Return true so that the menu is displayed in the Toolbar */
         return true;
     }
@@ -213,40 +220,38 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             return true;
         }
         if (id == R.id.action_car_traffic_ban) {
-            showCarTrafficBanDialog();
+            CarTrafficBanFragment carTrafficBanFragment = CarTrafficBanFragment.newInstance(mCarBan);
+            carTrafficBanFragment.show(getSupportFragmentManager(), CarTrafficBanFragment.FRAGMENT_TAG);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void showCarTrafficBanDialog() {
-        Log.d(TAG, "showCarTrafficBanDialog");
+    private void showCarTrafficBanIcon(Cursor carBanCursor) {
+        Log.d(TAG, "showCarTrafficBanIcon");
 
-        long dateTimeMillis = AirToDateUtils.getTodayAtMidnight();
-        long dateNormalizedMillis = AirToDateUtils.getDateAtMidday(dateTimeMillis);
+        if (carBanCursor == null) {
+            hideCarBan = true;
+            // Invalidate menu so onCreateOptionsMenu(...) is called again
+            invalidateOptionsMenu();
+        } else if (carBanCursor.moveToFirst()) {
 
-        Uri carBanUri = WeatherContract.WeatherEntry.
-                buildWeatherUriWithDate(dateNormalizedMillis);
+            mCarBan = new String[4];
 
-        Cursor carBanCursor = getContentResolver().query(
-                carBanUri,
-                new String[]{
-                        WeatherContract.WeatherEntry.COLUMN_LEVEL,
-                        WeatherContract.WeatherEntry.COLUMN_BLOCK_TYPE
-                },
-                null,
-                null,
-                null);
+            String levelToday = carBanCursor.getString(INDEX_CAR_BAN_LEVEL);
+            String blockTypeToday = carBanCursor.getString(INDEX_CAR_BAN_BLOCK_TYPE);
 
-        if (carBanCursor != null && carBanCursor.moveToFirst()) {
-            String level = carBanCursor.getString(0);
-            String blockType = carBanCursor.getString(1);
+            mCarBan[0] = levelToday;
+            mCarBan[1] = blockTypeToday;
 
-            CarTrafficBanFragment carTrafficBanFragment = CarTrafficBanFragment.newInstance(level, blockType);
-            carTrafficBanFragment.setCancelable(true);
-            carTrafficBanFragment.show(getSupportFragmentManager(), CarTrafficBanFragment.FRAGMENT_TAG);
+            if (carBanCursor.moveToNext()) {
+                String levelTomorrow = carBanCursor.getString(INDEX_CAR_BAN_LEVEL);
+                String blockTypeTomorrow = carBanCursor.getString(INDEX_CAR_BAN_BLOCK_TYPE);
+
+                mCarBan[2] = levelTomorrow;
+                mCarBan[3] = blockTypeTomorrow;
+            }
         }
-
-        carBanCursor.close();
     }
+
 }

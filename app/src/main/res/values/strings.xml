@@ -14,6 +14,9 @@
     <string name="no_network">Will refresh when network available.</string>
     <string name="error_data">No weather data&#8230;\nWill load data when the network is available.</string>
 
+    <string name="car_ban_title">Car traffic ban</string>
+    <string name="car_ban_no_info_msg">Sorry! No information available.</string>
+
     <!-- Temperature format -->
     <string name="format_temperature" translatable="false">
         <xliff:g id="temp">%1.0f</xliff:g>\u00B0

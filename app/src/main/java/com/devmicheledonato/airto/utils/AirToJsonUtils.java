@@ -70,9 +70,14 @@ public class AirToJsonUtils {
                 }
             }
 
-            if (carTrafficBan != null && i == 0) {
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LEVEL, carTrafficBan[0]);
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_BLOCK_TYPE, carTrafficBan[1]);
+            if (carTrafficBan != null) {
+                if (AirToDateUtils.getDayName(context, dateNormalizedMillis).equals(context.getString(R.string.today))) {
+                    weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LEVEL, carTrafficBan[0]);
+                    weatherValues.put(WeatherContract.WeatherEntry.COLUMN_BLOCK_TYPE, carTrafficBan[1]);
+                } else if (AirToDateUtils.getDayName(context, dateNormalizedMillis).equals(context.getString(R.string.tomorrow))) {
+                    weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LEVEL, carTrafficBan[2]);
+                    weatherValues.put(WeatherContract.WeatherEntry.COLUMN_BLOCK_TYPE, carTrafficBan[3]);
+                }
             }
 
             weatherContentValues[i] = weatherValues;

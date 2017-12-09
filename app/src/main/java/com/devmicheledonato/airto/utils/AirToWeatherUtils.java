@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.devmicheledonato.airto.R;
 
+import static com.devmicheledonato.airto.utils.AirToNetworkUtils.IPQA_NA;
+
 /**
  * Created by Michele on 01/05/2017.
  */
@@ -59,7 +61,7 @@ public class AirToWeatherUtils {
     public static String getIpqaString(Context context, String ipqa) {
 
         String ipqaString = "N.D.";
-        if (ipqa != null && !ipqa.equals("NOT_AVAILABLE")) {
+        if (ipqa != null && !ipqa.equals(IPQA_NA)) {
             ipqaString = ipqa.toUpperCase();
         }
         return ipqaString;
