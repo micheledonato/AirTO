@@ -11,6 +11,7 @@ import com.devmicheledonato.airto.BuildConfig;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -134,21 +135,23 @@ public class AirToNetworkUtils {
 
         Document doc = Jsoup.connect(CAR_TRAFFIC_BAN_URL).timeout(0).get();
         Element table = doc.select("table[id=situazioneSmog] > tbody").first();
-        Iterator<Element> iteratorTR = table.select("tr").iterator();
-
+        
+        Elements children = table.children();
         int i = 0;
-        do {
-            iteratorTR.next();
+        for (Element e : children) {
+            if (!e.select("tr > td").isEmpty()) {
+                Elements trtd = e.select("tr > td");
 
-            Iterator<Element> iteratorTD = table.select("td").iterator();
-            iteratorTD.next();
-            String level = iteratorTD.next().text();
-            String blockType = iteratorTD.next().text();
+                Iterator<Element> iteratorTD = trtd.select("td").iterator();
 
-            carTrafficBan[i++] = level;
-            carTrafficBan[i++] = blockType;
+                iteratorTD.next(); //Date not useful
+                String level = iteratorTD.next().text();
+                String blockType = iteratorTD.next().text();
 
-        } while (iteratorTR.hasNext() && i < 4);
+                carTrafficBan[i++] = level;
+                carTrafficBan[i++] = blockType;
+            }
+        }
 
         return carTrafficBan;
     }
