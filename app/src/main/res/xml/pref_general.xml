@@ -3,9 +3,16 @@
 
     <SwitchPreferenceCompat
         android:defaultValue="@bool/show_notifications_by_default"
-        android:key="@string/pref_enable_notifications_key"
+        android:key="@string/pref_enable_weather_notifications_key"
         android:summaryOff="@string/pref_enable_notifications_false"
         android:summaryOn="@string/pref_enable_notifications_true"
-        android:title="@string/pref_enable_notifications_label" />
+        android:title="@string/pref_enable_weather_notifications_label" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="@bool/show_notifications_by_default"
+        android:key="@string/pref_enable_car_ban_notifications_key"
+        android:summaryOff="@string/pref_enable_notifications_false"
+        android:summaryOn="@string/pref_enable_notifications_true"
+        android:title="@string/pref_enable_car_ban_notifications_label" />
 
 </PreferenceScreen>

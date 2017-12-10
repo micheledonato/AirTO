@@ -12,8 +12,6 @@ import com.devmicheledonato.airto.utils.AirToNetworkUtils;
 import com.devmicheledonato.airto.utils.AirToJsonUtils;
 import com.devmicheledonato.airto.utils.AirToNotificationUtils;
 
-import org.json.JSONObject;
-
 import java.net.URL;
 
 /**
@@ -67,7 +65,7 @@ public class SyncTask {
                  * Finally, after we insert data into the ContentProvider, determine whether or not
                  * we should notify the user that the weather has been refreshed.
                  */
-                boolean notificationsEnabled = AirToPreferences.areNotificationsEnabled(context);
+                boolean weatherNotificationsEnabled = AirToPreferences.areWeatherNotificationsEnabled(context);
 
                 /*
                  * If the last notification was shown was more than 1 day ago, we want to send
@@ -86,8 +84,13 @@ public class SyncTask {
                  * We only want to show the notification if the user wants them shown and we
                  * haven't shown a notification in the past day.
                  */
-                if (notificationsEnabled && oneDayPassedSinceLastNotification) {
+                if (weatherNotificationsEnabled && oneDayPassedSinceLastNotification) {
                     AirToNotificationUtils.notifyUserOfNewWeather(context);
+                }
+
+                boolean carBanNotificationsEnabled = AirToPreferences.areCarBanNotificationsEnabled(context);
+                if (carBanNotificationsEnabled) {
+                    AirToNotificationUtils.notifyUserOfCarBan(context);
                 }
             }
 

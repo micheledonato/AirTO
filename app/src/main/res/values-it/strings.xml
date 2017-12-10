@@ -26,7 +26,7 @@
     <string name="tornado">Tornado</string>
     <string name="wind">Vento</string>
 
-    <string name="pref_enable_notifications_label">Notifiche meteo</string>
+    <string name="pref_enable_weather_notifications_label">Notifiche meteo</string>
     <string name="pref_enable_notifications_true">Ogni giorno riceverai una notifica</string>
     <string name="pref_enable_notifications_false">Disattivate</string>
 
@@ -35,5 +35,6 @@
     <string name="car_ban_title">Blocco auto</string>
     <string name="car_ban_no_info_msg">Ci dispiace! Nessuna informazione disponibile.</string>
     <string name="city">Torino</string>
+    <string name="pref_enable_car_ban_notifications_label">Notifiche blocco auto</string>
 
 </resources>

@@ -66,6 +66,18 @@ public class AirToDateUtils {
         return date.getTimeInMillis();
     }
 
+    public static long getTomorrowAtMidnight() {
+        // tomorrow
+        Calendar date = new GregorianCalendar();
+        // reset hour, minutes, seconds and millis
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+        date.add(Calendar.DATE, 1);
+        return date.getTimeInMillis();
+    }
+
     /**
      * Returns a date string in the format specified, which shows an abbreviated date without a
      * year.

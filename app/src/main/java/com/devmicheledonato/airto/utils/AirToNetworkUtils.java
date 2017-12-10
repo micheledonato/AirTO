@@ -135,7 +135,7 @@ public class AirToNetworkUtils {
 
         Document doc = Jsoup.connect(CAR_TRAFFIC_BAN_URL).timeout(0).get();
         Element table = doc.select("table[id=situazioneSmog] > tbody").first();
-        
+
         Elements children = table.children();
         int i = 0;
         for (Element e : children) {
