@@ -5,9 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.devmicheledonato.airto.R;
+import com.devmicheledonato.airto.utils.AirToDateUtils;
 
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.Date;
 
 /**
  * Created by Michele on 06/12/2017.
@@ -74,9 +74,9 @@ public class AirToPreferences {
      * @param context Used to access SharedPreferences
      * @return UNIX time of when the last notification was shown
      */
-    public static long getLastNotificationTimeInMillis(Context context) {
+    public static long getLastNotificationTimeInMillis(Context context, String lastNotificationKey) {
         /* Key for accessing the time at which Sunshine last displayed a notification */
-        String lastNotificationKey = context.getString(R.string.pref_last_notification_key);
+//        String lastNotificationKey = context.getString(R.string.pref_last_notification_key);
 
         /* As usual, we use the default SharedPreferences to access the user's preferences */
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -104,29 +104,38 @@ public class AirToPreferences {
      * @param context Used to access SharedPreferences as well as use other utility methods
      * @return Elapsed time in milliseconds since the last notification was shown
      */
-    public static long getEllapsedTimeSinceLastNotification(Context context) {
-        long lastNotificationTimeMillis = AirToPreferences.getLastNotificationTimeInMillis(context);
+    public static long getEllapsedTimeSinceLastNotification(Context context, String lastNotificationKey) {
+        long lastNotificationTimeMillis = AirToPreferences.getLastNotificationTimeInMillis(context, lastNotificationKey);
         long timeSinceLastNotification = System.currentTimeMillis() - lastNotificationTimeMillis;
         return timeSinceLastNotification;
     }
 
-    public static void rdshrtsht(){
+    /**
+     * @param context
+     * @return
+     */
+    public static boolean isSevenOclock(Context context, String lastNotificationKey) {
 
-        Calendar calendar = Calendar.getInstance(Locale.ITALY);
-        int dayOfWeekNow = calendar.get(Calendar.DAY_OF_WEEK);
+        long nowTimeMillis = new Date().getTime();
+        long lastNotificationTimeMillis = AirToPreferences.getLastNotificationTimeInMillis(context, lastNotificationKey);
+        long tomorrowAtSevenFromLstaNotificationTimeMillis = AirToDateUtils.getTomorrowAtMidnightFromTimeInMillis(lastNotificationTimeMillis) + AirToDateUtils.SEVEN_HOURS;
+
+        if (nowTimeMillis - lastNotificationTimeMillis >= tomorrowAtSevenFromLstaNotificationTimeMillis - lastNotificationTimeMillis) {
+            return true;
+        }
+        return false;
     }
 
     /**
      * Saves the time that a notification is shown. This will be used to get the ellapsed time
      * since a notification was shown.
      *
-     * @param context Used to access SharedPreferences
+     * @param context            Used to access SharedPreferences
      * @param timeOfNotification Time of last notification to save (in UNIX time)
      */
-    public static void saveLastNotificationTime(Context context, long timeOfNotification) {
+    public static void saveLastNotificationTime(Context context, long timeOfNotification, String lastNotificationKey) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
-        String lastNotificationKey = context.getString(R.string.pref_last_notification_key);
         editor.putLong(lastNotificationKey, timeOfNotification);
         editor.apply();
     }

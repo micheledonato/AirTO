@@ -6,6 +6,7 @@ import android.content.Context;
 import android.text.format.DateUtils;
 import android.util.Log;
 
+import com.devmicheledonato.airto.R;
 import com.devmicheledonato.airto.data.AirToPreferences;
 import com.devmicheledonato.airto.data.WeatherContract;
 import com.devmicheledonato.airto.utils.AirToNetworkUtils;
@@ -72,24 +73,27 @@ public class SyncTask {
                  * another notification to the user that the weather has been updated. Remember,
                  * it's important that you shouldn't spam your users with notifications.
                  */
-                long timeSinceLastNotification = AirToPreferences.getEllapsedTimeSinceLastNotification(context);
+//                long timeSinceLastNotification = AirToPreferences.getEllapsedTimeSinceLastNotification(context);
+//
+//                boolean oneDayPassedSinceLastNotification = false;
+//
+//                if (timeSinceLastNotification >= DateUtils.DAY_IN_MILLIS) {
+//                    oneDayPassedSinceLastNotification = true;
+//                }
 
-                boolean oneDayPassedSinceLastNotification = false;
-
-                if (timeSinceLastNotification >= DateUtils.DAY_IN_MILLIS) {
-                    oneDayPassedSinceLastNotification = true;
-                }
+                boolean sevenOclockSinceWeatherNotification = AirToPreferences.isSevenOclock(context, context.getString(R.string.pref_last_weather_notification_key));
 
                 /*
                  * We only want to show the notification if the user wants them shown and we
                  * haven't shown a notification in the past day.
                  */
-                if (weatherNotificationsEnabled && oneDayPassedSinceLastNotification) {
+                if (weatherNotificationsEnabled && sevenOclockSinceWeatherNotification) {
                     AirToNotificationUtils.notifyUserOfNewWeather(context);
                 }
 
                 boolean carBanNotificationsEnabled = AirToPreferences.areCarBanNotificationsEnabled(context);
-                if (carBanNotificationsEnabled) {
+                boolean sevenOclockSinceCarBanNotification = AirToPreferences.isSevenOclock(context, context.getString(R.string.pref_last_car_ban_notification_key));
+                if (carBanNotificationsEnabled && sevenOclockSinceCarBanNotification) {
                     AirToNotificationUtils.notifyUserOfCarBan(context);
                 }
             }

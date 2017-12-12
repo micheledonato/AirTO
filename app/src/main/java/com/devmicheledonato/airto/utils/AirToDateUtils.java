@@ -32,7 +32,8 @@ public class AirToDateUtils {
     public static final long DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1);
     /* Milliseconds in a half day */
     public static final long HALF_DAY = TimeUnit.HOURS.toMillis(12);
-
+    /* Milliseconds in seven hours */
+    public static final long SEVEN_HOURS = TimeUnit.HOURS.toMillis(7);
 
     /**
      * Date at midday
@@ -66,9 +67,10 @@ public class AirToDateUtils {
         return date.getTimeInMillis();
     }
 
-    public static long getTomorrowAtMidnight() {
+    public static long getTomorrowAtMidnightFromTimeInMillis(long timeInMillis) {
         // tomorrow
         Calendar date = new GregorianCalendar();
+        date.setTimeInMillis(timeInMillis);
         // reset hour, minutes, seconds and millis
         date.set(Calendar.HOUR_OF_DAY, 0);
         date.set(Calendar.MINUTE, 0);

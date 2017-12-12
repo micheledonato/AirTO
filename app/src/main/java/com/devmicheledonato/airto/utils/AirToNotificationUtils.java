@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -95,7 +96,7 @@ public class AirToNotificationUtils {
              * Since we just showed a notification, save the current time. That way, we can check
              * next time the weather is refreshed if we should show another notification.
              */
-            AirToPreferences.saveLastNotificationTime(context, System.currentTimeMillis());
+            AirToPreferences.saveLastNotificationTime(context, System.currentTimeMillis(), context.getString(R.string.pref_last_weather_notification_key));
         }
 
         /* Always close your cursor when you're done with it to avoid wasting resources. */
@@ -105,7 +106,7 @@ public class AirToNotificationUtils {
     public static void notifyUserOfCarBan(Context context) {
         Log.d(TAG, "notifyUserOfCarBan");
 
-        long dateTimeMillis = AirToDateUtils.getTomorrowAtMidnight();
+        long dateTimeMillis = AirToDateUtils.getTomorrowAtMidnightFromTimeInMillis(System.currentTimeMillis());
         long dateNormalizedMillis = AirToDateUtils.getDateAtMidday(dateTimeMillis);
 
         Uri tomorrowWeatherUri = WeatherContract.WeatherEntry.
@@ -123,12 +124,15 @@ public class AirToNotificationUtils {
             String level = carBanCursor.getString(INDEX_CAR_BAN_LEVEL);
             String blockType = carBanCursor.getString(INDEX_CAR_BAN_BLOCK_TYPE);
 
-            int imageId = R.drawable.ic_car_ban;
-            String notificationTitle = context.getString(R.string.app_name);
-            String notificationText = "Domani blocco auto livello " + level + "\n" + blockType;
+            if (level != null && blockType != null) {
+                int imageId = R.drawable.ic_car_ban;
+                String notificationTitle = context.getString(R.string.app_name);
+                String notificationText = "Domani blocco auto livello " + level + "\n" + blockType;
 
-            sendNotification(context, imageId, notificationTitle, notificationText, CAR_BAN_NOTIFICATION_ID);
+                sendNotification(context, imageId, notificationTitle, notificationText, CAR_BAN_NOTIFICATION_ID);
 
+                AirToPreferences.saveLastNotificationTime(context, System.currentTimeMillis(), context.getString(R.string.pref_last_car_ban_notification_key));
+            }
         }
 
         carBanCursor.close();
