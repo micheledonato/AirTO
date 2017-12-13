@@ -45,6 +45,10 @@ public class AirToDateUtils {
         return date + HALF_DAY;
     }
 
+    public static long getNormalizedDate(long date) {
+        return date + ITALY_TIME_ZONE.getOffset(date);
+    }
+
     /**
      * This method returns the number of days since the epoch (January 01, 1970, 12:00 Midnight UTC)
      * in UTC time from the current date.
@@ -111,10 +115,9 @@ public class AirToDateUtils {
          * day name.
          */
         long daysFromEpochToProvidedDate = elapsedDaysSinceEpoch(dateInMillis);
-        long daysFromEpochToToday = elapsedDaysSinceEpoch(System.currentTimeMillis());
+        long daysFromEpochToToday = elapsedDaysSinceEpoch(getNormalizedDate(System.currentTimeMillis()));
 
         int daysAfterToday = (int) (daysFromEpochToProvidedDate - daysFromEpochToToday);
-        Log.d(TAG, dateInMillis + " - " + System.currentTimeMillis());
         Log.d(TAG, daysFromEpochToProvidedDate + " - " + daysFromEpochToToday + " = " + daysAfterToday);
 
         switch (daysAfterToday) {

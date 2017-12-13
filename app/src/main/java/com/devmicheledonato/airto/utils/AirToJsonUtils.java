@@ -45,7 +45,7 @@ public class AirToJsonUtils {
             JSONObject dayForecast = jsonWeatherArray.getJSONObject(i);
             long dateTimeMillis = dayForecast.getLong(ChildData.TIME);
 
-            long dateNormalizedMillis = AirToDateUtils.getDateAtMidday(dateTimeMillis * 1000);
+            long dateNormalizedMillis = AirToDateUtils.getNormalizedDate(dateTimeMillis * 1000);
 //            Log.d(TAG, "Date at midday: " + dateNormalizedMillis);
 
             String summary = dayForecast.getString(ChildData.SUMMARY);

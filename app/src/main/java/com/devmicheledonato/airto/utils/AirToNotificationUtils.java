@@ -67,7 +67,7 @@ public class AirToNotificationUtils {
         Log.d(TAG, "notifyUserOfNewWeather");
 
         long dateTimeMillis = AirToDateUtils.getTodayAtMidnight();
-        long dateNormalizedMillis = AirToDateUtils.getDateAtMidday(dateTimeMillis);
+        long dateNormalizedMillis = AirToDateUtils.getNormalizedDate(dateTimeMillis);
 
         Uri todayWeatherUri = WeatherContract.WeatherEntry.
                 buildWeatherUriWithDate(dateNormalizedMillis);
@@ -96,7 +96,8 @@ public class AirToNotificationUtils {
              * Since we just showed a notification, save the current time. That way, we can check
              * next time the weather is refreshed if we should show another notification.
              */
-            AirToPreferences.saveLastNotificationTime(context, System.currentTimeMillis(), context.getString(R.string.pref_last_weather_notification_key));
+            AirToPreferences.saveLastNotificationTime(context, AirToDateUtils.getNormalizedDate(System.currentTimeMillis()),
+                    context.getString(R.string.pref_last_weather_notification_key));
         }
 
         /* Always close your cursor when you're done with it to avoid wasting resources. */
@@ -107,7 +108,7 @@ public class AirToNotificationUtils {
         Log.d(TAG, "notifyUserOfCarBan");
 
         long dateTimeMillis = AirToDateUtils.getTomorrowAtMidnightFromTimeInMillis(System.currentTimeMillis());
-        long dateNormalizedMillis = AirToDateUtils.getDateAtMidday(dateTimeMillis);
+        long dateNormalizedMillis = AirToDateUtils.getNormalizedDate(dateTimeMillis);
 
         Uri tomorrowWeatherUri = WeatherContract.WeatherEntry.
                 buildWeatherUriWithDate(dateNormalizedMillis);
@@ -131,7 +132,8 @@ public class AirToNotificationUtils {
 
                 sendNotification(context, imageId, notificationTitle, notificationText, CAR_BAN_NOTIFICATION_ID);
 
-                AirToPreferences.saveLastNotificationTime(context, System.currentTimeMillis(), context.getString(R.string.pref_last_car_ban_notification_key));
+                AirToPreferences.saveLastNotificationTime(context, AirToDateUtils.getNormalizedDate(System.currentTimeMillis()),
+                        context.getString(R.string.pref_last_car_ban_notification_key));
             }
         }
 
