@@ -44,27 +44,33 @@ public class CarTrafficBanFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         String title = getString(R.string.car_ban_title);
-        SpannableString message = new SpannableString(getString(R.string.car_ban_no_info_msg));
+        SpannableString message;
 
-        String levelToday = "";
-
-        SpannableString messageToday = new SpannableString("");
+        String levelToday;
+        String blockTypeToday;
         if (mCarBanData != null && mCarBanData[0] != null) {
             levelToday = "Oggi livello " + mCarBanData[0] + ":";
-            String blockTypeToday = mCarBanData[1];
-            messageToday = new SpannableString(levelToday + "\n" + blockTypeToday + "\n");
-            messageToday.setSpan(new StyleSpan(Typeface.BOLD), 0, levelToday.length(), 0);
-            message = messageToday;
+            blockTypeToday = mCarBanData[1];
+        }else {
+            levelToday = "Oggi:";
+            blockTypeToday = getString(R.string.car_ban_no_info_msg);
         }
+        SpannableString messageToday = new SpannableString(levelToday + "\n" + blockTypeToday + "\n");
+        messageToday.setSpan(new StyleSpan(Typeface.BOLD), 0, levelToday.length(), 0);
 
+        String levelTomorrow;
+        String blockTypeTomorrow;
         if (mCarBanData != null && mCarBanData[2] != null) {
-            String levelTomorrow = "Domani livello " + mCarBanData[2] + ":";
-            String blockTypeTomorrow = mCarBanData[3];
-            SpannableString messageTomorrow = new SpannableString(messageToday + "\n" + levelTomorrow + "\n" + blockTypeTomorrow);
-            messageTomorrow.setSpan(new StyleSpan(Typeface.BOLD), 0, levelToday.length(), 0);
-            messageTomorrow.setSpan(new StyleSpan(Typeface.BOLD), messageToday.length() + 1, messageToday.length() + 1 + levelTomorrow.length(), 0);
-            message = messageTomorrow;
+            levelTomorrow = "Domani livello " + mCarBanData[2] + ":";
+            blockTypeTomorrow = mCarBanData[3];
+        } else {
+            levelTomorrow = "Domani:";
+            blockTypeTomorrow = getString(R.string.car_ban_no_info_msg);
         }
+        SpannableString messageTomorrow = new SpannableString(messageToday + "\n" + levelTomorrow + "\n" + blockTypeTomorrow);
+        messageTomorrow.setSpan(new StyleSpan(Typeface.BOLD), 0, levelToday.length(), 0);
+        messageTomorrow.setSpan(new StyleSpan(Typeface.BOLD), messageToday.length() + 1, messageToday.length() + 1 + levelTomorrow.length(), 0);
+        message = messageTomorrow;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title)

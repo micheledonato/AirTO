@@ -34,7 +34,7 @@
     <string name="developer">MICHELE DONATO</string>
     <string name="action_car_traffic_ban">Blocco auto</string>
     <string name="car_ban_title">Blocco auto</string>
-    <string name="car_ban_no_info_msg">Ci dispiace! Nessuna informazione disponibile.</string>
+    <string name="car_ban_no_info_msg">Ci dispiace! Nessuna informazione disponibile, riprova più tardi.</string>
     <string name="city">Torino</string>
     <string name="pref_enable_car_ban_notifications_label">Notifiche blocco auto</string>
     <string name="credits">Ringraziamenti</string>

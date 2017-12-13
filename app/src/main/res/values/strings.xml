@@ -20,7 +20,7 @@
     <string name="error_data">No weather data&#8230;\nWill load data when the network is available.</string>
 
     <string name="car_ban_title">Car traffic ban</string>
-    <string name="car_ban_no_info_msg">Sorry! No information available.</string>
+    <string name="car_ban_no_info_msg">Sorry! No information available, please try again later.</string>
 
     <!-- Temperature format -->
     <string name="format_temperature" translatable="false">
