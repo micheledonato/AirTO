@@ -57,5 +57,12 @@
     <string name="pref_enable_car_ban_notifications_key" translatable="false">enable_car_ban_notifications</string>
     <string name="pref_enable_car_ban_notifications_label">Car traffic ban notifications</string>
     <string name="pref_last_car_ban_notification_key" translatable="false">last_car_ban_notification</string>
+    <string name="ipqa_title">Air quality</string>
+    <string name="ipqa_no_info_msg">No information available, please try again later.</string>
+    <string name="ipqa_accettabile">Air quality is acceptable, the expected concentrations of pollutants are close to the reference thresholds for the short-term limit and target values for the protection of human health.</string>
+    <string name="ipqa_buona">The air quality is good, the expected concentrations of the pollutants are lower than the reference thresholds for the short-term limit and target values for the protection of human health.</string>
+    <string name="ipqa_cattiva">Air quality is bad, the expected concentrations of pollutants are higher than the reference thresholds for the short-term limit and target values for the protection of human health.</string>
+    <string name="ipqa_ottima">The air quality is excellent, the expected concentrations of the pollutants are considerably lower than the reference thresholds concerning the short-term limit and objective values for the protection of human health.</string>
+    <string name="ipqa_pessima">Air quality is very bad, pollutant concentrations are well above the reference thresholds for short-term limit values and targets for the protection of human health.</string>
 
 </resources>
