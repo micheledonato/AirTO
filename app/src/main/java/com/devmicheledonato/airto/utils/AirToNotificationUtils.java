@@ -152,6 +152,9 @@ public class AirToNotificationUtils {
                 .setDefaults(Notification.DEFAULT_LIGHTS);
 
         Intent intent = new Intent(context, MainActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (pendingIntent != null) {

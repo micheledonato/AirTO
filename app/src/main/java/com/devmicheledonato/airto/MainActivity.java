@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private boolean hideCarBan = false;
     private String[] mCarBan;
+    private String mIpqaInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +109,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // specify an adapter (see also next example)
         mAdapter = new WeatherAdapter(this);
+        mAdapter.setOnIpqaIconClickListener(new WeatherAdapter.OnIpqaIconClickListener() {
+            @Override
+            public void onIpqaIconClick() {
+                IpqaInfoFragment ipqaInfoFragment = IpqaInfoFragment.newInstance(mIpqaInfo);
+                ipqaInfoFragment.show(getSupportFragmentManager(), IpqaInfoFragment.FRAGMENT_TAG);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -155,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mSwipeRefreshLayout.setRefreshing(false);
         mAdapter.swapCursor(data);
         showCarTrafficBanIcon(data);
+        saveIpqaInfo(data);
         if (data.getCount() != 0) {
             showData();
         }
@@ -251,6 +260,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 mCarBan[2] = levelTomorrow;
                 mCarBan[3] = blockTypeTomorrow;
             }
+        }
+    }
+
+    private void saveIpqaInfo(Cursor ipqaCursor) {
+        Log.d(TAG, "saveIpqaInfo");
+
+        if (ipqaCursor == null) {
+
+        } else if (ipqaCursor.moveToFirst()) {
+            mIpqaInfo = ipqaCursor.getString(INDEX_WEATHER_IPQA);
         }
     }
 

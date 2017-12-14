@@ -145,6 +145,14 @@
         app:layout_constraintRight_toRightOf="parent"
         tools:src="@drawable/ic_ottima" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:src="@drawable/ic_info_outline_white_24px"
+        app:layout_constraintRight_toRightOf="@+id/air_icon"
+        app:layout_constraintTop_toTopOf="@+id/air_icon" />
+
     <!-- Text that describes weather condition -->
     <TextView
         android:id="@+id/weather_description"

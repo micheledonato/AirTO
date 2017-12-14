@@ -55,7 +55,11 @@ public class AirToWeatherUtils {
         int temperatureFormatResourceId = R.string.format_temperature;
 
         /* For presentation, assume the user doesn't care about tenths of a degree. */
-        return String.format(context.getString(temperatureFormatResourceId), temperature);
+        String formattedTemperature = String.format(context.getString(temperatureFormatResourceId), temperature);
+        if (formattedTemperature.equals("-0°")) {
+            formattedTemperature = "0°";
+        }
+        return formattedTemperature;
     }
 
     public static String getIpqaString(Context context, String ipqa) {
@@ -173,5 +177,39 @@ public class AirToWeatherUtils {
         }
 
         return ipqaImageId;
+    }
+
+    public static String getIpqaInfoForIpqaCondition(Context context, String ipqa) {
+
+        String ipqaCondition = "";
+        try {
+            ipqaCondition = "ic_" + ipqa.toLowerCase();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        String ipqaInfo;
+
+        switch (ipqaCondition) {
+            case OTTIMA:
+                ipqaInfo = context.getString(R.string.ipqa_ottima);
+                break;
+            case BUONA:
+                ipqaInfo = context.getString(R.string.ipqa_buona);
+                break;
+            case ACCETTABILE:
+                ipqaInfo = context.getString(R.string.ipqa_accettabile);
+                break;
+            case CATTIVA:
+                ipqaInfo = context.getString(R.string.ipqa_cattiva);
+                break;
+            case PESSIMA:
+                ipqaInfo = context.getString(R.string.ipqa_pessima);
+                break;
+            default:
+                ipqaInfo = context.getString(R.string.ipqa_no_info_msg);
+        }
+
+        return ipqaInfo;
     }
 }

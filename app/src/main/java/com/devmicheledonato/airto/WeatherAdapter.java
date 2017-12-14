@@ -50,6 +50,16 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         notifyDataSetChanged();
     }
 
+    private OnIpqaIconClickListener ipqaIconClickListener;
+
+    public interface OnIpqaIconClickListener {
+        void onIpqaIconClick();
+    }
+
+    public void setOnIpqaIconClickListener(OnIpqaIconClickListener listener) {
+        ipqaIconClickListener = listener;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 //        Log.d(TAG, "onCreateViewHolder");
@@ -136,11 +146,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             holder.weatherDescription.setText(description);
         }
 
-        double minTemp = mCursor.getLong(MainActivity.INDEX_WEATHER_MIN_TEMP);
+        double minTemp = mCursor.getDouble(MainActivity.INDEX_WEATHER_MIN_TEMP);
         String minString = AirToWeatherUtils.formatTemperature(mContext, minTemp);
         holder.min.setText(minString);
 
-        double maxTemp = mCursor.getLong(MainActivity.INDEX_WEATHER_MAX_TEMP);
+        double maxTemp = mCursor.getDouble(MainActivity.INDEX_WEATHER_MAX_TEMP);
         String maxString = AirToWeatherUtils.formatTemperature(mContext, maxTemp);
         holder.max.setText(maxString);
 
@@ -192,6 +202,15 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             super(itemView);
             ipqa = (TextView) itemView.findViewById(R.id.ipqa);
             airIcon = (ImageView) itemView.findViewById(R.id.air_icon);
+            if (airIcon != null) {
+                airIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((ImageView) v).getDrawable();
+                        ipqaIconClickListener.onIpqaIconClick();
+                    }
+                });
+            }
         }
     }
 }

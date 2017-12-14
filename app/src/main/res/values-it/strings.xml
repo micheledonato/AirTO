@@ -40,4 +40,12 @@
     <string name="credits">Ringraziamenti</string>
     <string name="version_title">Versione</string>
 
+    <string name="ipqa_ottima">La qualità dell\'aria è ottima, le concentrazioni previste degli inquinanti sono notevolmente inferiori alle soglie di riferimento relative ai valori limite e obiettivo di breve periodo per la tutela della salute umana.</string>
+    <string name="ipqa_buona">La qualità dell\'aria è buona, le concentrazioni previste degli inquinanti sono inferiori alle soglie di riferimento relative ai valori limite e obiettivo di breve periodo per la tutela della salute umana.</string>
+    <string name="ipqa_accettabile">La qualità dell\'aria è accettabile, le concentrazioni previste degli inquinanti sono prossime alle soglie di riferimento relative ai valori limite e obiettivo di breve periodo per la tutela della salute umana.</string>
+    <string name="ipqa_cattiva">La qualità dell\'aria è cattiva, le concentrazioni previste degli inquinanti sono superiori alle soglie di riferimento relative ai valori limite e obiettivo di breve periodo per la tutela della salute umana.</string>
+    <string name="ipqa_pessima">La qualità dell\'aria è pessima, le concentrazioni degli inquinanti sono ampiamente superiori alle soglie di riferimento relative ai valori limite e obiettivo di breve periodo per la tutela della salute umana.</string>
+    <string name="ipqa_title">Qualità dell\'aria</string>
+    <string name="ipqa_no_info_msg">Nessuna informazione disponibile, riprova più tardi.</string>
+
 </resources>
