@@ -168,7 +168,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     public int getItemViewType(int position) {
         if (mUseTodayLayout && position == 0) {
             return VIEW_TYPE_TODAY;
-        } else if (position == 1) {
+        } else if (position == 0 || position == 1) {
             return VIEW_TYPE_TOMORROW;
         } else {
             return VIEW_TYPE_FUTURE_DAY;
