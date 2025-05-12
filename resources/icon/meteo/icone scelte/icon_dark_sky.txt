@@ -1,0 +1,14 @@
+clear-day, 
+clear-night, 
+tornado
+wind,
+cloudy,
+partly-cloudy-day,
+partly-cloudy-night.
+fog,
+snow
+hail
+thunderstorm
+rain, 
+sleet (snow)
+default (cloudy)
